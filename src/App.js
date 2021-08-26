@@ -7,7 +7,7 @@ function App() {
   const [simpson, setSimpson] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const nextSimpson = () => {
+  const getSimpson = () => {
     const apiUrl = "https://simpsons-quotes-api.herokuapp.com/quotes";
     setLoading(true);
 
@@ -25,13 +25,13 @@ function App() {
       });
   };
 
-  useEffect(nextSimpson, []);
+  useEffect(getSimpson, []);
 
   return (
     <div className="wrapper">
       {loading && <p>Loading....</p>}
-      {<SimpsonCard simpson={simpson} />}
-      <button className="btn" onClick={nextSimpson}>
+      <SimpsonCard simpson={simpson} />
+      <button className="btn" onClick={getSimpson}>
         Next
       </button>
     </div>
