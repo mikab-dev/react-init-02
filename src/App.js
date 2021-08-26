@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import SimpsonCard from "./components/SimpsonCard";
+import "./App.css";
 
 function App() {
+  const [simpson, setSimpson] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const nextSimpson = () => {
+    const apiUrl = "https://simpsons-quotes-api.herokuapp.com/quotes";
+    setLoading(true);
+
+    axios
+      .get(apiUrl)
+      .then((response) => response.data)
+      .then((data) => {
+        setSimpson(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(nextSimpson, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      {loading && <p>Loading....</p>}
+      {<SimpsonCard simpson={simpson} />}
+      <button className="btn" onClick={nextSimpson}>
+        Next
+      </button>
     </div>
   );
 }
